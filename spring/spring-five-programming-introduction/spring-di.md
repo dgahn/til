@@ -95,6 +95,8 @@ public class Computer
 
 **Computer** 클래스를 생성할 때, **Mouse** 클래스 대신 **NewMouse**를 생성자의 파라미터로 넘기면 **Computer** 클래스의 코드는 변경될 일이 없다. 이처럼 **Computer** 클래스 외부로부터 **Mouse** 클래스를 주입 받는 방식을 `DI(Dependency Injection, 의존주입)`이라고 표현한다.
 
+<br>
+
 ## 3. 객체 조립기
 
 우리가 객체를 주입하기 위해서는 어디선가는 그 객체를 생성해서 넣어줘야 한다. 아래와 같이 메인 메소드에서 객체를 생성해도 된다.
@@ -109,6 +111,8 @@ public class Main {
 
 }
 ```
+
+<br>
 
 또 다른 방법으로는 의존 객체를 생성해주는 별도의 클래스를 만드는 것이다.
 
@@ -134,6 +138,8 @@ public class Assembler {
 }
 ```
 
+<br>
+
 이와 같은 클래스를 **Assembler** 또는 **객체 조립기**라고 표현한다. 그러면 우리는 **Assembler**를 통해서 아래와 같이 생성된 객체를 가져와 사용하면 된다.
 
 ```java
@@ -148,6 +154,8 @@ public class Main {
 
 }
 ```
+
+<br>
 
 ## 4. 스프링의 DI 설정
 
@@ -194,6 +202,8 @@ public class Main {
   - **AnnotationConfigApplicationContext** : Java 애노테이션을 사용한 클래스로부터 객체 설정 정보를 가져온다.
   - **GenericXmlApplicationContext** : XML로부터 객체 설정 정보를 가져온다.
   - **GenericGroovyApplicationContext** : Groovy 코드를 이용한 설정 정보를 가져온다.
+
+<br>
 
 ### 4.1 생성자 방식과 Setter 방식
 
@@ -245,13 +255,15 @@ public class AppContext {
 
 위와 같이 Setter 메소드를 통해서 객체를 주입할 수 있다.
 
+<br>
+
 > 생성자 주입 방식과 Setter 주입 방식의 차이점  
-> 생성자 주입 방식 : 빈 객체를 생성하는 시점에 모든 의존 객체를 넣을 수 있다. 하지만, 의존 객체가 너무 많으면 어떤 객체를 주입해야하는지를 알기 위해 생성자 코드를 봐야한다.
-> Setter 주입 방식 : Setter 메소드를 통해서 어떤 객체가 주입되는지 명확하게 알 수 있다. 하지만, 의존 객체를 Setter 메소드를 통해 주입하지 않고 의존 객체를 호출하는 경우에 NullPoint Exception이 발생할 수 있다.
+> 생성자 주입 방식 : 빈 객체를 생성하는 시점에 모든 의존 객체를 넣을 수 있다. 하지만, 의존 객체가 너무 많으면 어떤 객체를 주입해야하는지를 알기 위해 생성자 코드를 봐야한다.   
+> Setter 주입 방식 : Setter 메소드를 통해서 어떤 객체가 주입되는지 명확하게 알 수 있다. 하지만, 의존 객체를 Setter 메소드를 통해 주입하지 않고 의존 객체를 호출하는 경우에 NullPoint Exception이 발생할 수 있다.   
+
+<br>
 
 ## 여러 설정파일 사용하는 방법
-
-
 
 - **@Import** : 이 애노테이션을 통해서 다른 스프링 설정파일을 해당 스프링 설정파일에 포함한다. 
   - 포함해야하는 스프링 설정 파일 하나인 경우
@@ -270,6 +282,8 @@ public class AppContext {
 
     }
     ```
+
+<br>
 
 ## 용어 정리
 
