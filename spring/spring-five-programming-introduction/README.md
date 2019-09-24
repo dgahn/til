@@ -8,3 +8,4 @@
 
 - [Step 1. 스프링 DI](./spring-di.md)
 - [Step 2. 의존 자동 주입](./dependent-automatic-injection.md)
+- [Step 3. 컴포넌트 스캔](./component-scan.md)
