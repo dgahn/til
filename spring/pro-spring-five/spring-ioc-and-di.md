@@ -63,7 +63,9 @@ public class Computer implements ApplicationContextAware {
 
 **Computer** 클래스는 **Keyboard** 객체를 직접 만들지 않고 **ApplicationContextAware**를 통해 구현한 메소드인 **setApplicationContext()** 메소드를 통해서 **ApplicationContext**를 받아서 **Keyboard** 빈 객체를 **Dependeny Lookup**한다.
 
-#### Dependency Pull와 Contextualized Dependency Lookup의 차이
+<br>
+
+#### 1.1.3 Dependency Pull와 Contextualized Dependency Lookup의 차이
 
 **Dependency Pull**은 아래 그림과 같이 컨테이너가 의존 객체가 필요로하는 의존성을 중앙 레지스트리에 저장을 하면 그것을 의존 객체가 **중앙 레지스트리에서 가져가는 형태**이다.  
 <img src="https://imgur.com/BCZ8syM.png" width="600" >
