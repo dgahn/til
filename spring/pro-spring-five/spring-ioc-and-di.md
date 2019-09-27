@@ -75,3 +75,10 @@ public class Computer implements ApplicationContextAware {
 <img src="https://imgur.com/oy7swo6.png" width="430" >
 
 스프링에서는 컨테이너와 의존성 풀이 **ApplicationContext**로 동일시 되기 때문에 그 차이는 정해진 시점에 따라 의존성을 가져간다는 것에서 차이가 있는 것으로 보인다.
+
+<br>
+
+### 1.2 Dependency Injection
+
+의존성 주입에 대해서는 [스프링 의존 자동 주입](../spring-five-programming-introduction/dependent-automatic-injection.md)를 참고하면 된다.
+
