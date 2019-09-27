@@ -7,4 +7,4 @@
 
 ## Vue
 
-- [Typescript with Vue 실전 프로젝트](./vue/README.md)
+- [Typescript with Vue 실전 프로젝트](./vue/typescript-with-vue/README.md)
