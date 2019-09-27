@@ -7,4 +7,4 @@
 - [Step.1 vue-cli로 Typescript 프로젝트 생성하기](./create-typescipt-project-with-vue-cli.md)
 - [Step.2 프로젝트 구조 및 설명](./project-structure.md)
 - [Step.3 @Component로 컴포넌트 만들기](./create-component.md)
-
+- [Step.4 @Prop으로 데이터 전달하기](./prop-decorator.md)
