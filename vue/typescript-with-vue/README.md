@@ -8,3 +8,4 @@
 - [Step.2 프로젝트 구조 및 설명](./project-structure.md)
 - [Step.3 @Component로 컴포넌트 만들기](./create-component.md)
 - [Step.4 @Prop으로 데이터 전달하기](./prop-decorator.md)
+- [Step.5 @watch로 데이터 변화 감지하기](./watch-decorator.md)
