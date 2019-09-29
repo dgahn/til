@@ -11,3 +11,4 @@
 - [Step.5 @watch로 데이터 변화 감지하기](./watch-decorator.md)
 - [Step.6 @Emit으로 이벤트 전달하기](./emit-decorator.md)
 - [Step.7 @Provide/@Inject로 데이터 전달하기](./provide-inject-decorator.md)
+- [Step.8 @Model 사용하기](./model-decorator.md)
