@@ -8,3 +8,7 @@
 ## Vue
 
 - [Typescript with Vue 실전 프로젝트](./vue/typescript-with-vue/README.md)
+
+## etc.
+
+- [Netlify로 웹페이지 배포하기](./etc/netlify-web-site-deploy.md)
