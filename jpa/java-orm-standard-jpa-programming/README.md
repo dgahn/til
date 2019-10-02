@@ -8,4 +8,5 @@
 
 ### 자바 ORM 표준 JPA 프로그래밍
 
-- [Step.1 JPA 소개 - SQL 중심적인 개발의 문제점](./jpa-introduction-sql-development-problem.md)
+- [Step.1 JPA 소개](./jpa-introduction-sql-development-problem.md)
+- [Step.2 JPA 시작하기](./jpa-getting-started.md)
