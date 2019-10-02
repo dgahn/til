@@ -1,0 +1,11 @@
+# 자바 ORM 표준 JPA 프로그래밍
+
+## Overview
+
+이 폴더는 김영한님의 **[자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic#)** 강의를 보고 배운 것에 대해서 기술합니다.
+
+자세한 내용은 강의를 꼭 참고하길 바란다.
+
+### 자바 ORM 표준 JPA 프로그래밍
+
+- [Step.1 JPA 소개 - SQL 중심적인 개발의 문제점](./jpa-introduction-sql-development-problem.md)
