@@ -20,7 +20,7 @@ $ brew services start h2
 ```
 
 <br>
-아래의 Url에 접속하여 데이터베이스를 확인해야합니다.
+아래의 Url에 접속하여 데이터베이스를 확인합니다.
 
 ```
 http://localhost:8082
@@ -408,4 +408,10 @@ List<Member> resultList = em.createQuery("select m from Member as m", Member.cla
 
 ## 5. 용어 정리
 
-내일 복습하면 작성한다.
+- **persistence.xml** : **JPA** 설정파일이다.
+- **Persistence** : **persistence.xml** 파일을 읽어 데이터베이스 연결을 생성할 수 있는 **EntityManagerFactory**를 만들 수 있다.
+- **EntityManagerFactory** : **EntityManager**를 생성하는 객체이다. 데이터베이스마다 하나만 생성한다.
+- **EntityManager** : 데이터베이스를 연결하는 하나의 단위가 되는 객체이다. 한번 사용하면 리소스는 반납하는 것이 좋다.
+- **@Entity** : JPA에게 관리할 대상임을 지정하는 애노테이션이다.
+- **@Id** : PK가 무엇인지 알려주는 애노테이션이다.
+- **JPQL** : 객체대상으로 쿼리를 작성할 수 있게 해주는 JPA의 기능이다.
