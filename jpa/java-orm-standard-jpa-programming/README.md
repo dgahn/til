@@ -11,3 +11,4 @@
 - [Step.1 JPA 소개](./jpa-introduction-sql-development-problem.md)
 - [Step.2 JPA 시작하기](./jpa-getting-started.md)
 - [Step.3 영속성 관리 - 내부 동작 방식](./persistence-management.md)
+- [Step.4 엔티티 매핑](./entity-mapping.md)
