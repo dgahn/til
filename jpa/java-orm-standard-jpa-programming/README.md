@@ -1,5 +1,7 @@
 # 자바 ORM 표준 JPA 프로그래밍
 
+<br>
+
 ## Overview
 
 이 폴더는 김영한님의 **[자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic#)** 강의를 보고 배운 것에 대해서 기술합니다.
@@ -12,3 +14,9 @@
 - [Step.2 JPA 시작하기](./jpa-getting-started.md)
 - [Step.3 영속성 관리 - 내부 동작 방식](./persistence-management.md)
 - [Step.4 엔티티 매핑](./entity-mapping.md)
+
+<br>
+
+## Code Repositoy
+
+[JPA SHOP 저장소](https://github.com/dgahn/jpa-shop)
