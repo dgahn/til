@@ -15,6 +15,7 @@
 - [Step.3 영속성 관리 - 내부 동작 방식](./persistence-management.md)
 - [Step.4 엔티티 매핑](./entity-mapping.md)
 - [Step.5 연관관계 매핑](./relationshop-mapping.md)
+- [Step.6 다양한 연관관계 매핑](./variety-relationship-mapping.md)
 
 <br>
 
