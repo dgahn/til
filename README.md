@@ -13,6 +13,10 @@
 
 - [Typescript with Vue 실전 프로젝트](./vue/typescript-with-vue/README.md)
 
+## Algorithm
+
+- [코드 플러스 2019 알고리즘 기초 1편](./algorithm/README.md)
+
 ## etc.
 
 - [Netlify로 웹페이지 배포하기](./etc/netlify-web-site-deploy.md)
