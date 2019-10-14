@@ -17,6 +17,7 @@
 - [Step.5 연관관계 매핑](./relationshop-mapping.md)
 - [Step.6 다양한 연관관계 매핑](./variety-relationship-mapping.md)
 - [Step.7 고급 매핑](./advanced-mapping.md)
+- [Step.8 프록시](./proxy.md)
 
 <br>
 

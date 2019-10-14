@@ -12,3 +12,4 @@
 
 - [Step.1 알고리즘 시작](./algorith-start.md)
 - [Step.2 Stack, Queue, Deque](./stack-queue-deuque.md)
+- [Step.3 수학 1](./math1.md)
