@@ -1,8 +1,16 @@
 # TIL
 
+## Algorithm
+
+- [코드 플러스 2019 알고리즘 기초 1편](./algorithm/README.md)
+
 ## Jpa
 
 - [자바 ORM 표준 JPA 프로그래밍 - 기본편](./jpa/java-orm-standard-jpa-programming/README.md)
+
+## Kotlin
+
+- [새차원의 Kotlin](./kotlin/new-dimension-kotilin/README.md)
 
 ## Spring
 
@@ -12,10 +20,6 @@
 ## Vue
 
 - [Typescript with Vue 실전 프로젝트](./vue/typescript-with-vue/README.md)
-
-## Algorithm
-
-- [코드 플러스 2019 알고리즘 기초 1편](./algorithm/README.md)
 
 ## etc.
 
