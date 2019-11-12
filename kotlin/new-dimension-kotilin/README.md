@@ -11,3 +11,4 @@
 ### 새차원의 Kotlin
 
 - [Step.1 Basic Syntax](./basic-syntx.md)
+- [Step.2 Basic Types](./basic-types.md)
