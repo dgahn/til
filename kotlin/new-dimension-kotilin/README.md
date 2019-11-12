@@ -17,3 +17,4 @@
 - [Step.5 Class](./class.md)
 - [Step.6 Inheritance](./inheritance.md)
 - [Step.7 Properties and Fields](./properties-and-fields.md)
+- [Step.8 Data, Nested classes](./data-nested-classes.md)
