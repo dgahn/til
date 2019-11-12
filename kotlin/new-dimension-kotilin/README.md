@@ -15,3 +15,4 @@
 - [Step.3 Control Flow](./control-flow.md)
 - [Step.4 Packages, Return and Jumps](./packages-return-and-jumps.md)
 - [Step.5 Class](./class.md)
+- [Step.6 Inheritance](./inheritance.md)
