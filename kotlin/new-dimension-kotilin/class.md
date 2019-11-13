@@ -80,7 +80,7 @@ class Customer public @Inject constructor(name: String) { ... }
 - 기본생성자에 어노테이션 접근 지정자 등이 있는 경우 constructor 키워드가 필요하다.
 
 ```kotlin
-class Persion {
+class Person {
     constructor(parent: Person) {
         parent.children.add(this)
     }

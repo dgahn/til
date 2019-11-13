@@ -24,7 +24,7 @@ fun sum(a:Int, b: Int): Int {
 
 - 함수를 정의하는 키워드는 **fun**이다.
 - 리턴 타입이 함수명 뒤에 붙는다.
-- 함수 몸체가 식(Expression)인 경우 return이 생략가능하다. Kotlin에서 return retype 추론이 가능하기 때문이다.
+- 함수 몸체가 식(Expression)인 경우 return이 생략가능하다. Kotlin에서 return type 추론이 가능하기 때문이다.
 
 ```kotlin
 fun printKotlin(): Unit {
@@ -33,13 +33,15 @@ fun printKotlin(): Unit {
 ```
 
 - 리턴할 값이 없는 경우 Unit(Object)으로 리턴한다.
-- **Unit**은 Java에서 void 리턴을 의미한다. 그리고 생략 가능함으로 다음과 같이 코드를 작성하면 된다.
+- **Unit**은 Java에서 void 리턴을 의미한다. 
 
 ```kotlin
 fun printKotlin() {
     println("hello Kotlin");
 }
 ```
+
+- **Unit**은 생략이 가능하다.
 
 <br>
 
@@ -141,6 +143,7 @@ fun getStringLength(object: Any): Int? {
 ```
 
 - 타입 체크만 해도 자동으로 타입 변환이 된다.
+- when 문에서는 자동으로 타입이 변환되지는 않는다.
 
 <br>
 
@@ -206,7 +209,7 @@ for (item in items) {
 }
 ```
 
-- 컬렉션을 **in**을 통해서 loop할 수 있다.
+- 반복문과 **in**을 같이 쓰면 **향상된 for문**처럼 사용할 수 있다.
 
 ```kotlin
 val items = setOf("apple", "banana", "kiwi")
@@ -216,7 +219,7 @@ when {
 }
 ```
 
-- **in**으로 해당 값이 **collection**에 포함되는지 체크가 가능하다.
+- 조건문과 **in**을 같이 쓰면 컬렉션 중 해당 Object를 찾을 수 있다.
 
 ```kotlin
 val fruits = listOf("banana", "avocado", "apple", "kiwi")

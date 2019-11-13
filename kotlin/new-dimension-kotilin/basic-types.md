@@ -114,7 +114,7 @@ val a = arrayOf("0", "1", "2", "3", "4")
 ### 7.2 특별한 Array 클래스로
 
 ```kotlin
-val x: IntArrya = intArrayOf(1, 2, 3)
+val x: IntArray = intArrayOf(1, 2, 3)
 x[0] = 7
 println(x.get(0))
 println(x[0])
@@ -146,7 +146,7 @@ for (c in x) {
 - String은 characters로 구성된다.
 - s[i]와 같은 방식으로 접근이 가능하다. 하지만 immutable이라 변경이 불가능하다.
 
-### 9.1 문자열 리터럴
+### 8.1 문자열 리터럴
 
 ```kotlin
 val s = "Hello, world!\n"
