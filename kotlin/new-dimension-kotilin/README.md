@@ -18,3 +18,4 @@
 - [Step.6 Inheritance](./inheritance.md)
 - [Step.7 Properties and Fields](./properties-and-fields.md)
 - [Step.8 Data, Nested classes](./data-nested-classes.md)
+- [Step.9 Object Expressions and Declarations](./object-expressions-and-declarations.md)
