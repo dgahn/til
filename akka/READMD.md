@@ -4,7 +4,7 @@
 
 ## Overview
 
-이 폴더는 **[Akka Documentation](https://doc.akka.io/docs/akka/current/index.html)**을 보고 번역한 것에 대해서 기술한다.
+이 폴더는 [Akka Documentation](https://doc.akka.io/docs/akka/current/index.html)을 보고 번역한 것에 대해서 기술한다.
 
 예제는 java의 코드를 보고 kotlin으로 변경하여 작성하였다.
 

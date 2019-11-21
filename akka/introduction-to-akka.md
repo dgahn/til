@@ -2,7 +2,7 @@
 
 Akka는 프로세서 코어와 네트워크까지 확장할 수 있는 오픈 라이브러리 소스이다. 프로그래머가 low-level code을 작성할 필요 없이 비즈니스에 집중할 수 있게 해준다.
 
-많은 컴퓨터 방법론들이 현대 컴퓨터 구조 디자인에 내재된 중요한 문제들에 대해 해결하고 있지 못한다. 분산시스템이 성공하기 위해서는 구성들간의 응답 없는 충돌, 흐름에 흔적없이 없어지는 메시지 그리고 잠재된 네트워크 변동에 맞서야 한다. 이 문제들은 주의깊게 관리되는 인프라 데이터센터에서도 정기적으로 발샌한다. 심지어 좀 더 가상화된 구조에서도 발생한다.
+많은 컴퓨터 방법론들이 현대 컴퓨터 구조 디자인에 내재된 중요한 문제들에 대해 해결하고 있지 못한다. 분산시스템이 성공하기 위해서는 구성들간의 응답 없는 충돌, 흐름에 흔적없이 없어지는 메시지 그리고 잠재된 네트워크 변동에 맞서야 한다. 이 문제들은 주의깊게 관리되는 인프라 데이터센터에서도 정기적으로 발생한다. 심지어 좀 더 가상화된 구조에서도 발생한다.
 
 이러한 상황에서 akka는 다음과 같은 기능을 제공해준다.
 
@@ -22,4 +22,4 @@ Akka는 액터 모델을 사용하여 정확한 동시, 병렬 및 분산 시스
 
 ## How to get started
 
-akka를 처음으로 시작한다면 간단한 [Quickstart Guide](https://developer.lightbend.com/guides/akka-quickstart-java/)를 실행하는 것을 추천한다. 이 **QuickStart** ActorSystem, actor 그리고 message를 어떻게 정의하는지에 대해서 알려준다. 추가적으로 test module과 logging에 대해서도 알려준다. **Getting Started Guide**는 높은 수준의 정보를 제공한다. **Getting Started Guide**는 현대의 분산 시스템이 왜 Actor 모델과 맞는지 알려주고 akka에 대한 지식을 좀 더 알 수 있다.
+akka를 처음으로 시작한다면 간단한 [Quickstart Guide](https://developer.lightbend.com/guides/akka-quickstart-java/)를 실행하는 것을 추천한다. 이 **QuickStart**는 ActorSystem, actor 그리고 message를 어떻게 정의하는지에 대해서 알려준다. 추가적으로 test module과 logging에 대해서도 알려준다. **Getting Started Guide**는 높은 수준의 정보를 제공한다. **Getting Started Guide**는 현대의 분산 시스템이 왜 Actor 모델과 맞는지 알려주고 akka에 대한 지식을 좀 더 알 수 있다.
