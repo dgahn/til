@@ -18,6 +18,7 @@
 - [Step.2 Quickstart - Backend Actor Logic](./quickstart-backend-actor-logic.md)
 - [Step.3 Quickstart - HTTP Server Logic](./quickstart-http-server-logic.md)
 - [Step.4 Why modern systems need a new programming model](./why-modern-systems-need-new-model.md)
+- [Step.5 How the Actor Model Meets the Needs of Modern, Distributed Systems](./how-the-actor-model-meets-the-needs-of-modern.md)
 
 ### Code Repository
 
