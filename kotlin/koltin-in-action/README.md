@@ -10,4 +10,5 @@
 
 ### Kotlin In Action
 
-- [Step.1 람다로 프로그래밍](./programming-with-lambdas.md)
+- [Step.1 코틀린 기초](./basic-kotlin.md)
+- [Step.2 람다로 프로그래밍](./programming-with-lambdas.md)
