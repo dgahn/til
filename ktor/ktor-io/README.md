@@ -12,3 +12,4 @@
 
 - [Step.1 QuickStart](./quick-start.md)
 - [Step.2 Website](./website.md)
+- [Step.3 http-api](./http-api.md)
