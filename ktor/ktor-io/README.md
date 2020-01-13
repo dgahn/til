@@ -12,4 +12,5 @@
 
 - [Step.1 QuickStart](./quick-start.md)
 - [Step.2 Website](./website.md)
-- [Step.3 http-api](./http-api.md)
+- [Step.3 Http api](./http-api.md)
+- [Step.4 Server applications](./server-application.md)
