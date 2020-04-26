@@ -288,7 +288,7 @@ println(numbers.drop(1)) // [two, three, four, five]
 println(numbers.dropLast(2)) // [one, two, three]
 ```
 
-특정 조건을 만족할 때까지 앞에서 또는 뒤에서부터 값을 가져오거나 삭제할 수 있다. 만족한 조건은 포함하지 않는다.
+특정 조건을 만족하는 동안 앞에서 또는 뒤에서부터 값을 가져오거나 삭제할 수 있다.
 
 ```kotlin
 val numbers = listOf("one", "two", "three", "four", "five")
@@ -418,4 +418,157 @@ println("zero" in numbers) // false
 
 println(numbers.containsAll(listOf("four", "two"))) // true
 println(numbers.containsAll(listOf("one", "zero"))) // false
+```
+
+## Collection Ordering
+
+기본적인 sorting은 숫자의 경우 오름 차순으로 글자의 경우 영어사전 순으로 나열된다.
+
+```kotlin
+println(listOf("aaa", "bb", "c").sorted()) // [aaa, bb, c]
+println(listOf(5, 2, 9).sorted()) // [2, 5, 9]
+```
+
+별도로 연산을 하고 싶은 경우 비교 연산을 선언할 수 있다. Comparator에 들어가는 결과물이 양수가 되게 하는 것이 차순을 결정한다.
+예를 들어, 내림 차순의 경우 뒤의 숫자가 작음으로 뒤에서 앞에서 뒤를 빼야 양수를 만들 수 있다.
+
+```kotlin
+val lengthComparator = Comparator { str1: String, str2: String -> str1.length - str2.length }
+println(listOf("aaa", "bb", "c").sortedWith(lengthComparator)) // [c, bb, aaa]
+```
+
+**compareBy**로 간단하게 표현할 수도 있다. 기본적으로 오름 차순이다.
+
+```kotlin
+println(listOf("aaa", "bb", "c").sortedWith(compareBy { it.length })) // [c, bb, aaa]
+```
+
+### Natural Order
+
+오름 차순, 내림 차순의 기본정렬 함수를 제공한다.
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+
+println("Sorted ascending: ${numbers.sorted()}") // [four, one, three, two]
+println("Sorted descending: ${numbers.sortedDescending()}") // [two, three, one, four]
+```
+
+### Custom orders
+
+사용자 지정 순서나 비교할 수 없는 객체를 정렬하기 위해 **sortedBy()** 및 **sortedByDescending()** 함수를 제공한다
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+
+val sortedNumbers = numbers.sortedBy { it.length }
+println("Sorted by length ascending: $sortedNumbers") // [one, two, four, three]
+val sortedByLast = numbers.sortedByDescending { it.last() }
+println("Sorted by the last letter descending: $sortedByLast") // [four, two, one, three]
+```
+
+**Comparator**를 통해서 구현하는 **sortedWith()**를 제공한다.
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+println("Sorted by length ascending: ${numbers.sortedWith(compareBy { it.length })}") // [one, two, four, three]
+```
+
+### Reverse order
+
+순서를 반대로 변경해주는 **reversed()** 를 제공한다
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+println(numbers.reversed()) // [four, three, two, one]
+```
+
+뷰 형태의 **asReversed()** 를 제공한다.
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+val reversedNumbers = numbers.asReversed()
+println(reversedNumbers) // [four, three, two, one]
+```
+
+**asReversed()** 는 원본이 바뀌면 자동으로 바뀐다.
+
+```kotlin
+val numbers = mutableListOf("one", "two", "three", "four")
+val reversedNumbers = numbers.asReversed()
+println(reversedNumbers) // [four, three, two, one]
+numbers.add("five")
+println(reversedNumbers) // [five, four, three, two, one]
+```
+
+### Random order
+
+랜덤으로 섞어 주는 **shuffled()** 를 제공한다.
+
+```kotlin
+val numbers = listOf("one", "two", "three", "four")
+println(numbers.shuffled())
+```
+
+## Collection Aggregate Operation
+
+기본적인 집합 연산을 제공한다.
+
+```kotlin
+val numbers = listOf(6, 42, 10, 4)
+
+println("Count: ${numbers.count()}") // Count: 4
+println("Max: ${numbers.max()}") // Max: 42
+println("Min: ${numbers.min()}") // Min: 4
+println("Average: ${numbers.average()}") // Average: 15.5
+println("Sum: ${numbers.sum()}") // Sum: 62
+```
+
+특정 조건으로 집합 연산을 할 수 있도록 제공한다.
+
+```kotlin
+val numbers = listOf(5, 42, 10, 4)
+val min3Remainder = numbers.minBy { it % 3 }
+println(min3Remainder) // 42
+
+val strings = listOf("one", "two", "three", "four")
+val longestString = strings.maxWith(compareBy { it.length }) 
+println(longestString) // three
+
+println(numbers.sumBy { it * 2 }) // 122
+println(numbers.sumByDouble { it.toDouble() / 2 }) // 30.5
+```
+
+### Fold And Reduce
+
+컬렉션 요소들에 대해서 특정 연산을 실행 시켜주는 **fold()** 와 **reduce()** 를 제공한다.
+
+**fold()** 는 직접 초기값을 지정해주고 **reduce()** 는 첫번째 인자를 초기값으로 둔다.
+
+```kotlin
+val numbers = listOf(5, 2, 10, 4)
+
+val sum = numbers.reduce { sum, element -> sum + element } // 첫번째 단계에서 sum이 초기값으로 5, element가 2
+println(sum) // 21
+val sumDoubled = numbers.fold(0) { sum, element -> sum + element * 2 }
+println(sumDoubled) // 42
+```
+
+마지막 인덱스부터 연산하는 **foldRight()** 와 **reduceRight()** 를 제공한다.
+
+```kotlin
+val numbers = listOf(5, 2, 10, 4)
+val sumDoubledRight = numbers.foldRight(0) { element, sum -> sum + element * 2 }
+println(sumDoubledRight)
+```
+
+인덱스와 함께 사용할 수 있는 **foldIndexed()** **foldRightIndexed()** **reduceIndexed()** **reduceRightIndexed()** 가 제공된다.
+
+```kotlin
+val numbers = listOf(5, 2, 10, 4)
+val sumEven = numbers.foldIndexed(0) { idx, sum, element -> if (idx % 2 == 0) sum + element else sum }
+println(sumEven) // 42
+
+val sumEvenRight = numbers.foldRightIndexed(0) { idx, element, sum -> if (idx % 2 == 0) sum + element else sum }
+println(sumEvenRight) // 15
 ```
