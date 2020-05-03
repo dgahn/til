@@ -12,6 +12,7 @@
 
 - [Step.1 함수형 프로그래밍이란?](./functional-programming.md)
 - [Step.2 코틀린으로 함수형 프로그래밍 시작하기](./kotlin-grammer.md)
+- [Step.3 재귀](./recursion.md)
 - [번외 - 코틀린 컬렉션 함수](./kotlin-common-operations.md)
 
 
