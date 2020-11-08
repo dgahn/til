@@ -12,6 +12,10 @@
 
 - [자바스크립트로 알아보는 함수형 프로그래밍](./funtional-programming/funtional-programming-with-javascript/README.md)
 
+## GraphQL
+
+- [Graphql 이론](./graphql/graphql-theory/README.md)
+
 ## Jpa
 
 - [자바 ORM 표준 JPA 프로그래밍 - 기본편](./jpa/java-orm-standard-jpa-programming/README.md)
