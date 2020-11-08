@@ -11,3 +11,4 @@
 ### 자바스크립트로 알아보는 함수형 프로그래밍
 
 - [Step.1 소개](./introduction-graphql.md)
+- [Step.2 쿼리 & 뮤테이션](./query-and-mutation.md)
