@@ -169,3 +169,553 @@ class ExpiryDateCalculatorTest {
 - 2만원 납부시 2개월 뒤가 만료일
 - 3만원 납부시 3개월 뒤가 만료일
 - 10만원 납부시 만료일은 1년 뒤가 만료일
+
+가장 쉬운 첫 번째 테스트를 작성해보자.
+
+```kotlin
+class ExpiryDateCalculatorTest: FunSpec({
+
+    test("만원 납부하면 한달 뒤가 만료일이 됨") {
+        val billingDate = LocalDate.of(2019, 3, 1)
+        val payAmount = 10_000
+        
+        val cal = ExpiryDateCalculator()
+        val expiryDate = cal.calculateExpiryDate(billingDate, payAmount)
+        
+        expiryDate shouldBe LocalDate.of(2019, 4, 1)
+    }
+
+})
+```
+
+- 코드를 실행 가능한 수준으로 작성하고 테스트가 통과되도록 로직을 구성한다.
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(billingDate: LocalDate, payAmount: Int): LocalDate = LocalDate.of(2019, 4, 1)
+
+}
+```
+
+#### 3.2.2 예를 추가하면서 구현을 일반화
+
+동일 조건의 예를 추가해서 구현을 일반화하자.
+
+```kotlin
+test("만원 납부하면 한달 뒤가 만료일이 됨") {
+        val billingDate = LocalDate.of(2019, 3, 1)
+        val payAmount = 10_000
+
+        val cal = ExpiryDateCalculator()
+        val expiryDate = cal.calculateExpiryDate(billingDate, payAmount)
+
+        expiryDate shouldBe LocalDate.of(2019, 4, 1)
+
+        val billingDate2 = LocalDate.of(2019, 5, 5)
+        val payAmount2 = 10_000
+
+        val cal2 = ExpiryDateCalculator()
+        val expiryDate2 = cal2.calculateExpiryDate(billingDate2, payAmount2)
+
+        expiryDate2 shouldBe LocalDate.of(2019, 6, 5)
+}
+```
+
+테스트를 실행하면 실패할 것이고 구현 테스트를 수정해보자.
+
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(billingDate: LocalDate, payAmount: Int): LocalDate = billingDate.plusMonths(1)
+
+}
+```
+
+#### 3.2.3 코드 정리: 중복 제거
+
+테스트 코드를 완성했으니 리펙토링을 진행보자.
+
+```kotlin
+class ExpiryDateCalculatorTest : FunSpec({
+    
+    test("만원 납부하면 한달 뒤가 만료일이 됨") {
+        assertExpiryDate(
+            billingDate = LocalDate.of(2019, 3, 1),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2019, 4, 1)
+        )
+
+        assertExpiryDate(
+            billingDate = LocalDate.of(2019, 5, 5),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2019, 6, 5)
+        )
+    }
+    
+})
+
+fun assertExpiryDate(billingDate: LocalDate, payAmount: Int, expectedExpiryDate: LocalDate) {
+    val cal = ExpiryDateCalculator()
+    val actualExpiryDate = cal.calculateExpiryDate(billingDate, payAmount)
+    actualExpiryDate shouldBe expectedExpiryDate
+}
+```
+
+#### 3.2.4 예외 상황 처리
+
+단순히 한달 추가로 끝나지 않는 상황이 존재한다.
+
+- 납부일이 2019-01-31이고 납부액이 1만 원이면 만료일은 2019-02-28
+- 납부일이 2019-05-31이고 납부액이 1만 원이면 만료일은 2019-06-30
+- 납부일이 2020-01-31이고 납부액이 1만 원이면 만료일은 2020-02-29
+
+테스트 코드로 추가해보자.
+
+```kotlin
+    test("납부일과 한달 뒤 일자가 같지 않음") {
+        assertExpiryDate(
+            billingDate = LocalDate.of(2019, 1, 31),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2019, 2, 28)
+        )
+    }
+```
+
+테스트를 실행하면 통과를 하는데 이는 라이브러리가 알아서 처리해주기 때문이다.
+
+위에 언급된 테스트 케이스를 좀 더 추가해보자.
+
+
+```kotlin
+    test("납부일과 한달 뒤 일자가 같지 않음") {
+        assertExpiryDate(
+            billingDate = LocalDate.of(2019, 1, 31),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2019, 2, 28)
+        )
+        assertExpiryDate(
+            billingDate = LocalDate.of(2019, 5, 31),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2019, 6, 30)
+        )
+        assertExpiryDate(
+            billingDate = LocalDate.of(2020, 1, 31),
+            payAmount = 10_000,
+            expectedExpiryDate = LocalDate.of(2020, 2, 29)
+        )
+    }
+```
+
+#### 3.2.5 다음 테스트 선택: 다시 예외 상황
+
+그 다음으로 쉬운 테스틑 다음과 같다.
+
+- 2만 원을 지불하면 만료일이 두 달 뒤가 된다.
+- 3만 원을 지불하면 만료일이 세 달 뒤가 된다.
+
+예외 상황은 다음과 같다.
+
+- 첫 납부일이 2019-01-30이고 만료되는 2019-02-28에 1만 원을 납부하면 다음 만료일은 2019-03-30
+- 첫 납부일이 2019-05-31이고 만료되는 2019-06-30에 1만 원을 납부하면 다음 만료일은 2019-07-31
+
+둘 중 선택을 해서 테스트를 진행하면 된다.
+
+예외 상황을 먼저 테스트 해보자. 예외 상황을 테스트하려면 첫 납부일이 필요하다. 
+
+#### 3.2.6 다음 테스트를 추가하기 전에 리팩토링
+
+다음 작업이 필요하다.
+
+- calculateExpiryDate 메서도의 파라미터로 첫 납부일 추가
+- 첫 납부일, 납부일, 납부액을 담은 객체를 calculateExpiryDate 메서드에 전달
+
+파라미터 개수가 적을 수록 코드의 가독성과 유지보수에 유리하다. 파라미터 개수가 3개 이상이 되면 객체로 바꿔 한 개로 줄이는 것이 낫다.
+
+> payData 추가
+
+```kotlin
+class ExpiryDateCalculatorTest : FunSpec({
+
+    test("만원 납부하면 한달 뒤가 만료일이 됨") {
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 3, 1),
+                payAmount = 10_000,
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 4, 1)
+        )
+
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 5, 5),
+                payAmount = 10_000,
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 6, 5)
+        )
+    }
+
+    test("납부일과 한달 뒤 일자가 같지 않음") {
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 1, 31),
+                payAmount = 10_000,
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 2, 28)
+        )
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 5, 31),
+                payAmount = 10_000,
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 6, 30)
+        )
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2020, 1, 31),
+                payAmount = 10_000,
+            ),
+            expectedExpiryDate = LocalDate.of(2020, 2, 29)
+        )
+    }
+
+    test("첫 납부일 일자와 만료일 납부일 일자가 같지 않을 때 만료일 계산 테스트") {
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 2, 28),
+                payAmount = 10_000
+            ),
+            expectedExpiryDate = LocalDate.of(2020, 2, 29)
+        )
+    }
+
+})
+
+fun assertExpiryDate(payData: PayData, expectedExpiryDate: LocalDate) {
+    val cal = ExpiryDateCalculator()
+    val actualExpiryDate = cal.calculateExpiryDate(payData)
+    actualExpiryDate shouldBe expectedExpiryDate
+}
+```
+
+```kotlin
+class PayData(
+    val firstBillingData: LocalDate? = null,
+    val billingDate: LocalDate,
+    val payAmount: Int
+)
+```
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(payData: PayData): LocalDate = payData.billingDate.plusMonths(1)
+
+}
+```
+
+#### 3.2.7 예외 상황 테스트 진행 계속
+
+- 첫 납부일이 2019-01-31이고 만료되는 2019-02-28dp 1만 원을 납부하면 다음 만료일은 2019-03-31
+
+```kotlin
+test("첫 납부일 일자와 만료일 납부일 일자가 같지 않을 때 만료일 계산 테스트") {
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingData = LocalDate.of(2019, 1, 31),
+                billingDate = LocalDate.of(2019, 2, 28),
+                payAmount = 10_000
+            ),
+            expectedExpiryDate = LocalDate.of(2020, 2, 29)
+        )
+}
+```
+
+컴파일 에러를 없애주자.
+
+```kotlin
+class PayData(
+    val firstBillingData: LocalDate? = null,
+    val billingDate: LocalDate,
+    val payAmount: Int
+)
+```
+
+테스트를 통과시키자.
+
+```kotlin
+fun calculateExpiryDate(payData: PayData): LocalDate {
+        if (payData.firstBillingData == LocalDate.of(2019, 1, 31)) return LocalDate.of(2019, 3, 31)
+
+        return payData.billingDate.plusMonths(1)
+}
+```
+
+다음 케이스를 추가하자
+
+- 첫 납부일이 2019-01-30이고 만료되는 2019-02-28에 1만 원을 납부하면 다음 만료일은 2019-03-31
+
+```kotlin
+    test("첫 납부일 일자와 만료일 납부일 일자가 같지 않을 때 만료일 계산 테스트") {
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingDate = LocalDate.of(2019, 1, 31),
+                billingDate = LocalDate.of(2019, 2, 28),
+                payAmount = 10_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 3, 31)
+        )
+
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingDate = LocalDate.of(2019, 1, 30),
+                billingDate = LocalDate.of(2019, 2, 28),
+                payAmount = 10_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 3, 30)
+        )
+    }
+```
+
+```kotlin
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        if (payData.firstBillingDate != null) {
+            val candidateExp = payData.billingDate.plusMonths(1)
+            if (payData.firstBillingDate.dayOfMonth != candidateExp.dayOfMonth) return candidateExp.withDayOfMonth(
+                payData.firstBillingDate.dayOfMonth
+            )
+        }
+
+        return payData.billingDate.plusMonths(1)
+    }
+```
+
+다음 케이스를 추가하자.
+
+- 첫 납부일이 2019-05-31이고 만료되는 2019-06-30dp 1만 원을 납부하면 다음 만료일은 2019-07-31
+
+```kotlin
+    test("첫 납부일과 만료일 일자가 다를 때 만원 납부") {
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingDate = LocalDate.of(2019, 5, 31),
+                billingDate = LocalDate.of(2019, 6, 30),
+                payAmount = 10_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 7, 31)
+        )
+    }
+```
+
+#### 3.2.8 상수를 변수로
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths: Long = 1
+        if (payData.firstBillingDate != null) {
+            val candidateExp = payData.billingDate.plusMonths(addedMonths)
+            if (payData.firstBillingDate.dayOfMonth != candidateExp.dayOfMonth) return candidateExp.withDayOfMonth(
+                payData.firstBillingDate.dayOfMonth
+            )
+        }
+
+        return payData.billingDate.plusMonths(addedMonths)
+    }
+
+}
+```
+
+#### 3.2.9 다음 테스트 선택: 쉬운 테스트
+
+다음 테스트 케이스를 추가하자.
+
+- 2만 원을 지불하면 만료일이 두 달 뒤가 된다.
+- 3만 원을 지불하면 만료일이 석 달 뒤가 된다.
+
+```kotlin
+    test("이만원 이상 납부하면 비례해서 만료일 계산") {
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 3, 1),
+                payAmount = 20_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 5, 1)
+        )
+    }
+```
+
+테스트가 실패된다. 정상적인 실행을 위한 로직을 구현하면 다음과 같다.
+
+```kotlin
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths = (payData.payAmount / 10_000).toLong()
+        if (payData.firstBillingDate != null) {
+            val candidateExp = payData.billingDate.plusMonths(addedMonths)
+            if (payData.firstBillingDate.dayOfMonth != candidateExp.dayOfMonth) return candidateExp.withDayOfMonth(
+                payData.firstBillingDate.dayOfMonth
+            )
+        }
+
+        return payData.billingDate.plusMonths(addedMonths)
+    }
+```
+
+#### 3.2.10 예외 상황 테스트 추가
+
+- 첫 납부일이 2019-01-31이고 만료되는 2019-02-28에 2만원을 납부하면 다음 만료일은 2019-04-30
+
+```kotlin
+    test("예외 상황 테스트 추가") {
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingDate = LocalDate.of(2019, 1, 31),
+                billingDate = LocalDate.of(2019, 2, 28),
+                payAmount = 20_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 4, 30)
+        )
+    }
+```
+
+테스트를 성공할 수 있도록 로직을 변경하자.
+
+```kotlin
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths = (payData.payAmount / 10_000).toLong()
+        if (payData.firstBillingDate != null) {
+            val candidateExp = payData.billingDate.plusMonths(addedMonths)
+            if (payData.firstBillingDate.dayOfMonth != candidateExp.dayOfMonth) {
+                if (YearMonth.from(candidateExp).lengthOfMonth() < payData.firstBillingDate.dayOfMonth) {
+                    return candidateExp.withDayOfMonth(YearMonth.from(candidateExp).lengthOfMonth())
+                }
+                return candidateExp.withDayOfMonth(payData.firstBillingDate.dayOfMonth)
+            }
+        }
+
+        return payData.billingDate.plusMonths(addedMonths)
+    }
+```
+
+테스트 케이스를 추가하여 다시 테스트 해보자.
+
+```kotlin
+        assertExpiryDate(
+            payData = PayData(
+                firstBillingDate = LocalDate.of(2019, 3, 31),
+                billingDate = LocalDate.of(2019, 4, 30),
+                payAmount = 30_000
+            ),
+            expectedExpiryDate = LocalDate.of(2019, 7, 31)
+        )
+```
+
+#### 3.2.11 코드 정리
+
+코드를 정리해보자.
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths = (payData.payAmount / 10_000).toLong()
+        return if (payData.firstBillingDate != null) {
+            val candidateExp = payData.billingDate.plusMonths(addedMonths)
+            val dayOfFirstBilling = payData.firstBillingDate.dayOfMonth
+            if (dayOfFirstBilling != candidateExp.dayOfMonth) {
+                val dayLenOfCandiMon = YearMonth.from(candidateExp).lengthOfMonth()
+                if (dayLenOfCandiMon < dayOfFirstBilling) {
+                    candidateExp.withDayOfMonth(dayLenOfCandiMon)
+                } else {
+                    candidateExp.withDayOfMonth(dayOfFirstBilling)
+                }
+            } else {
+                candidateExp
+            }
+        } else {
+            payData.billingDate.plusMonths(addedMonths)
+        }
+    }
+
+}
+```
+
+메소드를 추출해보자.
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths = (payData.payAmount / 10_000).toLong()
+        return if (payData.firstBillingDate != null) {
+            expiryDateUsingFirstBillingDate(payData, addedMonths)
+        } else {
+            payData.billingDate.plusMonths(addedMonths)
+        }
+    }
+
+    private fun expiryDateUsingFirstBillingDate(payData: PayData, addedMonths: Long): LocalDate {
+        val candidateExp = payData.billingDate.plusMonths(addedMonths)
+        val dayOfFirstBilling = payData.firstBillingDate!!.dayOfMonth
+        val isSameDayOfMonth = dayOfFirstBilling != candidateExp.dayOfMonth
+        return if (isSameDayOfMonth) {
+            val dayLenOfCandiMon = YearMonth.from(candidateExp).lengthOfMonth()
+            val withDay = if (dayLenOfCandiMon < dayOfFirstBilling) dayLenOfCandiMon else dayOfFirstBilling
+            candidateExp.withDayOfMonth(withDay)
+        } else {
+            candidateExp
+        }
+    }
+
+}
+```
+
+#### 3.2.12 다음 테스트: 10개월 요금을 납부하면 1년 제공
+
+테스트 케이스를 추가하자.
+
+```kotlin
+    test("10개월 요금을 납부하면 1년 제공") {
+        assertExpiryDate(
+            payData = PayData(
+                billingDate = LocalDate.of(2019, 1, 28),
+                payAmount = 100_000
+            ),
+            expectedExpiryDate = LocalDate.of(2020, 1, 28)
+        )
+    }
+```
+
+테스트를 통과하도록 구현
+
+```kotlin
+class ExpiryDateCalculator {
+
+    fun calculateExpiryDate(payData: PayData): LocalDate {
+        val addedMonths = if (payData.payAmount == 100_000) 12 else (payData.payAmount / 10_000).toLong()
+        return if (payData.firstBillingDate != null) {
+            expiryDateUsingFirstBillingDate(payData, addedMonths)
+        } else {
+            payData.billingDate.plusMonths(addedMonths)
+        }
+    }
+
+    private fun expiryDateUsingFirstBillingDate(payData: PayData, addedMonths: Long): LocalDate {
+        val candidateExp = payData.billingDate.plusMonths(addedMonths)
+        val dayOfFirstBilling = payData.firstBillingDate!!.dayOfMonth
+        val isSameDayOfMonth = dayOfFirstBilling != candidateExp.dayOfMonth
+        return if (isSameDayOfMonth) {
+            val dayLenOfCandiMon = YearMonth.from(candidateExp).lengthOfMonth()
+            val withDay = if (dayLenOfCandiMon < dayOfFirstBilling) dayLenOfCandiMon else dayOfFirstBilling
+            candidateExp.withDayOfMonth(withDay)
+        } else {
+            candidateExp
+        }
+    }
+
+}
+```
+
+처음부터 모든 테스트 케이스를 생각할 수 있는 것은 아니다. 그러므로 테스트를 하다가 생각나는 부분에 대해서 테스트 케이스를 추가하고 리펙토링도 꾸준히 이루어져야 한다.
