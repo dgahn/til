@@ -13,3 +13,4 @@
 - [Step.1 TDD 개발준비](./tdd-preparation-development.md)
 - [Step.2 TDD 시작](./tdd-start.md)
 - [Step.3 테스트 코드 작성 순서](./order-of-writing-test-code.md)
+- [Step.4 TDD 기능 명세 설계](./tdd-functional-specification-design.md)
