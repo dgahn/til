@@ -283,3 +283,263 @@ tasks.test {
     }
 }
 ```
+
+## 5.3 예외 테스트
+
+```kotlin
+val exception = shouldThrow<IllegalAccessException> {
+   // code in here that you expect to throw an IllegalAccessException
+}
+exception.message should startWith("Something went wrong")
+```
+
+## 5.4 Listener
+
+### 5.4.1 Listener 종류
+테스트 전후로 무엇인가 하고 싶을 때 사용한다. 라이프 사이클이라고 부르고 다음과 같은 리스너들이 있다.
+
+- beforeContainer : 테스트 컨테이너가 시작되기 전 (TestType.Container)
+- afterContainer : 테스트 컨테이너가 시작된 후 (TestType.Container)
+- beforeEach : 테스트 케이스가 실행되기 전 (TestType.Test)
+- afterEach : 테스트 케이스가 실행되고 난 후 (TestType.Test)
+- beforeAny: 테스트 타입이 실행되기 전 (TestType)
+- afterAny: 테스트 타입이 실행된 후 (TestType)
+- beforeTest : beforeAny와 같음
+- afterTest : afterAny와 같음
+- beforeSpec : 개별 Spec이 인스턴스화 할 때 호출됨. beforeTest 전에 호출됨
+- afterSpec: 모든 TestCase가 완료된 이후에 호출됨. 개별 Spec 사용할 때 씀
+- prepareSpec: 클래스 파일 하나당 실행 준비할 때 호출됨. 기능적으로 beforeSpec과 동일함.
+- finalizeSpec: 클래스 파일 하나당 실행 완료되면 호출됨. 기능적으로 afterSpec과 동일함.
+- afterInvocation: 테스트 후에 반복실행하는 것이 있을 때 사용. afterTest와 동일한 기능을 가짐.
+- beforeProject: 모든 테스트 전에
+- afterProject: 모든 테스트 후에
+
+### 5.4.2 DSL Method
+
+```kotlin 
+class TestSpec : WordSpec({
+   beforeTest {
+     println("Starting a test $it")
+   }
+   afterTest { (test, result) ->
+     println("Finished spec with result $result")
+   }
+   "this test" should {
+      "be alive" {
+        println("Johnny5 is alive!")
+      }
+   }
+})
+```
+
+### 5.4.3 DSL methods with functions
+```kotlin
+val startTest: BeforeTest = {
+   println("Starting a test $it")
+}
+
+class TestSpec : WordSpec({
+
+   // used once
+   beforeTest(startTest)
+
+   "this test" should {
+      "be alive" {
+         println("Johnny5 is alive!")
+      }
+   }
+})
+
+class OtherSpec : WordSpec({
+
+   // used twice
+   beforeTest(startTest)
+
+   "this test" should {
+      "fail" {
+         fail("boom")
+      }
+   }
+})
+```
+
+### 5.4.4 Overriding callback functions in a Spec
+
+```kotlin
+class TestSpec : WordSpec() {
+    override fun beforeTest(testCase: TestCase) {
+        println("Starting a test $testCase")
+    }
+
+    init {
+        "this test" should {
+            "be alive" {
+                println("Johnny5 is alive!")
+            }
+        }
+    }
+}
+```
+
+### 5.4.5 Standalone Listener instances
+
+원하는 곳에만 등록하기
+
+```kotlin
+class MyTestListener : TestListener {
+   override suspend fun beforeSpec(spec:Spec) {
+      // power up kafka
+   }
+   override suspend fun afterSpec(spec: Spec) {
+      // shutdown kafka
+   }
+}
+
+
+class TestSpec : WordSpec({
+    listener(MyTestListener())
+    // tests here
+})
+```
+
+모두 등록하기
+
+```kotlin
+@AutoScan
+object MyProjectListener : ProjectListener {
+  override suspend fun beforeProject() {
+    println("Project starting")
+  }
+  override suspend fun afterProject() {
+    println("Project complete")
+  }
+}
+```
+
+### 5.4.6 System Out Listener
+
+표준 출력이 나오는 것에 대해서 에러를 발생하게 해준다.
+
+```kotlin
+class MyTestSpec : DescribeSpec({
+
+    listener(NoSystemOutListener)
+
+    describe("All these tests should not write to standard out") {
+        it("silence in the court") {
+          println("boom") // failure
+        }
+    }
+})
+```
+
+테스트에 쓰인 시간을 출력하기 위한 예제다.
+
+```kotlin
+object TimerListener : TestListener {
+
+  var started = 0L
+
+  override fun beforeTest(testCase: TestCase): Unit {
+    started = System.currentTimeMillis()
+  }
+
+  override fun afterTest(testCase: TestCase, result: TestResult): Unit {
+    println("Duration of ${testCase.description} = " + (System.currentTimeMillis() - started))
+  }
+}
+
+class MyTestClass : FunSpec({
+  listeners(TimerListener)
+  // tests here
+})
+
+// or
+
+object MyConfig : AbstractProjectConfig() {
+    override fun listeners(): List<Listener> = listOf(TimerListener)
+}
+```
+
+## 5.5 Ordering
+
+### 5.5.1 Spec Ordering
+
+AbstractProjectConfig을 통해서 설정할 수 있다.
+
+```kotlin
+class MyConfig: AbstractProjectConfig() {
+    override val specExecutionOrder = ...
+}
+```
+
+- Undefined: 기본 값으로 런타임에서 발견된 순서로대로 진행
+- Lexicographic: 사전 순으로
+- Random: 랜덤 순으로
+- Annotated: @Order로 생성된 순으로
+
+```kotlin
+@Order(1)
+class FooTest : FunSpec() { }
+
+@Order(0)
+class BarTest: FunSpec() {}
+
+@Order(1)
+class FarTest : FunSpec() { }
+
+class BooTest : FunSpec() {}
+```
+
+### 5.5.2 Test Ordering
+
+- Sequential :순서대로
+    ```kotlin
+    class SequentialSpec : StringSpec() {
+
+        override fun testCaseOrder(): TestCaseOrder? = TestCaseOrder.Sequential
+
+        init {
+        "foo" {
+            // I run first as I'm defined first
+        }
+
+        "bar" {
+            // I run second as I'm defined second
+        }
+        }
+    }
+    ```
+- Random: 랜덤으로
+    ```kotlin
+    class RandomSpec : StringSpec() {
+
+    override fun testCaseOrder(): TestCaseOrder? = TestCaseOrder.Random
+        init {
+            "foo" {
+                // This test may run first or second
+            }
+
+            "bar" {
+                // This test may run first or second
+            }
+        }
+    }   
+    ```
+- Lexicographic: 사전 순으로
+    ```kotlin
+    class LexicographicSpec : StringSpec() {
+
+        override fun testCaseOrder(): TestCaseOrder? = TestCaseOrder.Lexicographic
+
+        init {
+            "foo" {
+                // I run second as bar < foo
+            }
+
+            "bar" {
+                // I run first as bar < foo
+            }
+        }
+    }
+    ```
