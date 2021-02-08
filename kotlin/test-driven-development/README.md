@@ -14,4 +14,5 @@
 - [Step.2 TDD 시작](./tdd-start.md)
 - [Step.3 테스트 코드 작성 순서](./order-of-writing-test-code.md)
 - [Step.4 TDD 기능 명세 설계](./tdd-functional-specification-design.md)
-- [Step.5 Kotlin](./kotest.md)
+- [Step.5 Kotest](./kotest.md)
+- [Step.6 Mockk](./mockk.md)
