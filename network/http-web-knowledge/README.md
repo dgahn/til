@@ -12,3 +12,4 @@
 
 - [Step.1 인터넷 네트워크](./internet-communication.md)
 - [Step.2 URI와 웹 브라우저 요청 흐림](./uri.md)
+- [Step.3 HTTP 상태 코드](./http.md)
