@@ -454,7 +454,7 @@
 
 
 
-### 2.3.5 길이가 8글자 이상인 조건만 충족하는 경우
+### 2.3.5 대문자를 포함하지 않고 나머지 조건을 충족하는 경우
 
 - 해당 조건에 맞는 테스트 케이스를 설계한다.
     > me/dgahn/firstweek/step2/PasswordStrengthMeterTest.kt
@@ -508,7 +508,7 @@
 
 
 
-### 2.3.6 숫자 포함 조건만 충족하는 경우
+### 2.3.6 길이가 8글자 이상인 조건만 충족하는 경우
 
 - 해당 조건에 맞는 테스트 케이스를 설계한다.
     > me/dgahn/firstweek/step2/PasswordStrengthMeterTest.kt
@@ -636,7 +636,7 @@
 
 - 다른 테스트까지 모두 실행 가능하도록 코드를 수정한다.
 
-### 2.3.8 숫자 포함 조건만 충족하는 경우
+### 2.3.8 대문자 포함 조건만 충족하는 경우
 
 - 해당 조건에 맞는 테스트 케이스를 설계한다.
     > me/dgahn/firstweek/step2/PasswordStrengthMeterTest.kt
